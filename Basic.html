@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ArcGIS API for JavaScript - Basic</title>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css">
+    <script src="https://js.arcgis.com/4.25/"></script>
+    <style>
+      html, body, #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+    <script>
+      require([
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/Graphic",
+        "esri/layers/GraphicsLayer",
+        "esri/widgets/BasemapToggle",
+        "esri/widgets/BasemapGallery",
+        "esri/widgets/Expand"
+      ], function(Map, MapView, Graphic, GraphicsLayer, BasemapToggle, BasemapGallery, Expand) {
+
+        var map = new Map({
+          basemap: "hybrid"
+        });
+
+        var view = new MapView({
+          container: "viewDiv",
+          map: map,
+          center: [74.59, 42.87], // set center to Bishkek
+          zoom: 8 // zoom to scale level 8
+        });
+
+        var graphicsLayer = new GraphicsLayer();
+        map.add(graphicsLayer);
+
+        var bishkekMarker = new Graphic({
+          geometry: {
+            type: "point",
+            longitude: 74.604047,
+            latitude: 42.875486 
+          },
+          symbol: {
+            type: "simple-marker",
+            color: "red",
+            size: "16px",
+            outline: {
+              color: "#ffffff",
+              width: "3px"
+            }
+          },
+          //Image by Eldiiar Isakov from Pixabay
+          popupTemplate: {
+            title: "Bishkek City", 
+            content: "<img src='https://tinypic.host/images/2023/03/27/mountains-g396b6c471_640.jpg' alt='Image'><br><br><b>Description:</b> Bishkek is the capital city of Kyrgyzstan and is known for its vibrant culture and history. Visitors to the city can explore museums and art galleries or stroll through the streets to admire the architecture"
+          }
+        });
+        graphicsLayer.add(bishkekMarker);
+
+        var buranaMarker = new Graphic({
+          geometry: {
+            type: "point",
+            longitude: 75.334277,
+            latitude: 42.732954
+          },
+          symbol: {
+            type: "simple-marker",
+            color: "green",
+            size: "16px",
+            outline: {
+              color: "#ffffff",
+              width: "3px"
+            }
+          },
+          //Image by Makalu from Pixabay, url: https://pixabay.com/images/id-4770365/
+          popupTemplate: {
+            title: "Burana", 
+            content: "<img src='https://tinypic.host/images/2023/03/27/kyrgyzstan-g45433eeca_640.jpg' alt='Image'><br><br><b>Description:</b> The Burana Tower is an ancient minaret located in the Chuy Valley, near the city of Tokmok. The tower dates back to the 11th century and is one of the few remaining structures from the Karakhanid Empire. Visitors to the tower can climb to the top for stunning views of the surrounding countryside."
+          }
+        });
+        graphicsLayer.add(buranaMarker);
+
+        var IssykkulMarker = new Graphic({
+          geometry: {
+            type: "point",
+            longitude: 77.170152,
+            latitude: 42.387738
+          },  
+          symbol: {
+            type: "simple-marker",
+            color: "blue",
+            size: "16px",
+            outline: {
+              color: "#ffffff",
+              width: "3px"
+            }
+          },
+          //Photo by Yuliya Yevseyeva on Unsplash url: 
+          popupTemplate: {
+            title: "Issyk-kul Lake", 
+            content: "<img src='https://tinypic.host/images/2023/03/27/yuliya-yevseyeva-FLbVJ4NsnfM-unsplash.jpg' alt='Image'><br><br><b>Description:</b> Issyk-Kul is the second-largest alpine lake in the world and is located in the eastern part of Kyrgyzstan. The lake is known for its crystal clear waters and stunning mountain scenery. Visitors to Issyk-Kul can swim in the lake, explore the local towns and villages, or hike in the nearby mountains."
+          }
+          });
+          graphicsLayer.add(IssykkulMarker);
+          var basemapToggle = new BasemapToggle({
+          view: view,
+          nextBasemap: "hybrid"
+        });
+
+        // Create the BasemapGallery widget
+        var basemapGallery = new BasemapGallery({
+          view: view,
+          source: {
+            portal: {
+              url: "https://www.arcgis.com",
+              useVectorBasemaps: true  // Load vector tile basemaps
+            }
+          }
+        });
+
+        // Create an Expand widget for the BasemapGallery
+        var bgExpand = new Expand({
+          view: view,
+          content: basemapGallery,
+          expanded: false
+        });
+      view.ui.add(bgExpand, "top-right");
+
+      });
+    </script>
+  </head>
+  <body>
+    <div id="viewDiv"></div>
+  </body>
+</html>
